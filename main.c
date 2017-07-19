@@ -2,13 +2,26 @@
 
 struct Bitmap {
     unsigned int header_id[2];
+    unsigned int file_size[4];
 };
 
 void set_header_id(FILE *fp, struct Bitmap *bitmap) {
     int i;
+    fseek(fp, 0, SEEK_SET);
     for(i = 0; i < 2; i++) {
         int byte = fgetc(fp);
         bitmap->header_id[i] = (unsigned)byte;
+    }
+    rewind(fp);
+}
+
+void set_file_size(FILE *fp, struct Bitmap *bitmap) {
+    int i;
+    int byte_offset = 2;
+    fseek(fp, byte_offset, SEEK_SET);
+    for(i = 0; i < 4; i++) {
+        int byte = fgetc(fp);
+        bitmap->file_size[i] = byte;
     }
 }
 
@@ -22,11 +35,17 @@ int main() {
     struct Bitmap bitmap;
 
     //read header data into bitmap struct
-    set_header_id(fp, &bitmap);
-
-    for(i = 0; i <= 2; i++) {
-        printf("%x", bitmap.header_id[i]);
+    //set_header_id(fp, &bitmap);
+    //set_file_size(fp, &bitmap);
+    while(i < lsize) {
+        printf("%x-", fgetc(fp));
+        i++;
     }
+//    printf("%ld\n", lsize);
+//    for(i = 0; i < 4; i++) {
+//        printf("%d\n", bitmap.file_size[i]);
+//    }
+
     return 0;
 }
 
