@@ -4,64 +4,33 @@
 #include <string.h>
 
 typedef struct Bitmap {
-    unsigned int header_id[2];
+    unsigned short int header_id;
     unsigned int file_size;
-    unsigned int reserved_1[2]; //these differ based upon creation program
-    unsigned int reserved_2[2];
+    unsigned short int reserved_1; //these differ based upon creation program
+    unsigned short int reserved_2;
+    unsigned int pixel_offset;
 } Bitmap;
-
-int * read_byte_sequence(FILE *fp, int offset, int sequence_length, int * byte_buffer) {
-    int i;
-    fseek(fp, offset, SEEK_SET);
-
-    for(i = 0; i < sequence_length; i++) {
-
-        byte_buffer[i] = fgetc(fp);
-
-    }
-
-    rewind(fp);
-    return byte_buffer;
-}
-
-void set_header_id(FILE *fp, struct Bitmap *bitmap) {
-    int i;
-    int byte_sequence_length = 2;
-    int byte_offset = 0;
-    int byte_buffer[byte_sequence_length];
-    memcpy(bitmap->header_id,read_byte_sequence(fp, byte_offset, byte_sequence_length, byte_buffer), byte_sequence_length);
-}
-
-
-void set_reserved(FILE *fp, Bitmap *bitmap) {
-    int i;
-    int byte_offset = 6;
-    int field_length = 2;
-
-    fseek(fp, byte_offset, SEEK_SET);
-    for(i = 0; i < byte_offset; i++) {
-        int byte = fgetc(fp);
-        bitmap->reserved_1[i] = byte;
-    }
-    for(i = 0; i < byte_offset+field_length; i++) {
-        int byte = fgetc(fp);
-        bitmap->reserved_2[i] = byte;
-    }
-    rewind(fp);
-}
 
 int main() {
     FILE *fp = fopen("test.bmp", "r");
     Bitmap bitmap;
 
     //read header id
-    set_header_id(fp, &bitmap);
+    fread(&bitmap.header_id, 2,1,fp);
 
     //set header size
-    fseek(fp, 2, SEEK_SET);
     fread(&bitmap.file_size, 4,1,fp);
 
-    printf("file size : %d\n", bitmap.file_size);
+    //set reserved1
+    fread(&bitmap.reserved_1, 2, 1, fp);
+
+    //set reserved2
+    fread(&bitmap.reserved_2, 2, 1, fp);
+
+    //set pixel offset
+    fread(&bitmap.pixel_offset, 4, 1, fp);
+
+    printf("file size : %d\n reserved_1: %d\n reserved_2: %d\n pixel offset: %d\n", bitmap.file_size, bitmap.reserved_1, bitmap.reserved_2, bitmap.pixel_offset);
     return 0;
 }
 
