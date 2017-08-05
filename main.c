@@ -25,6 +25,10 @@ typedef struct {
     unsigned int important_num_colors;
 } InfoHeader;
 
+typedef struct {
+    unsigned char b,g,r;
+} Color;
+
 int main() {
     FILE *fp = fopen("test.bmp", "r");
     BitmapHeader bitmapHeader;
@@ -63,6 +67,23 @@ int main() {
     printf("num_colors: %d\n", infoHeader.num_colors);
     printf("important_num_colors: %d\n", infoHeader.important_num_colors);
 
+
+    //read pixel data
+    int pixel_count = infoHeader.height * infoHeader.width;
+    int i,j = 0;
+    Color color_array[pixel_count];
+    fseek(fp, bitmapHeader.pixel_offset, SEEK_SET);
+    for(i = 0; i < pixel_count/4; i+=4) {
+        Color color;
+        fread(&color, sizeof(Color), 1, fp);
+        color_array[j] = color;
+        j++;
+    }
+
+    //print the color array
+    for(i = 0; i < (sizeof(color_array)/sizeof(Color)); ++i) {
+        printf("b: %d g: %d r: %d", color_array[i].b, color_array[i].g, color_array[i].r);
+    }
     return 0;
 }
 
