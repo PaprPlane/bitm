@@ -2,38 +2,8 @@
 //to assign 2d arrays for byte arrays
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct {
-    unsigned short int header_id;
-    unsigned int file_size;
-    unsigned short int reserved_1; //these differ based upon creation program
-    unsigned short int reserved_2;
-    unsigned int pixel_offset;
-} BitmapHeader;
-
-typedef struct {
-    unsigned int header_size;
-    unsigned int width;
-    unsigned int height;
-    unsigned short int color_planes;
-    unsigned short int depth;
-    unsigned int compression;
-    unsigned int image_size;
-    unsigned int hor_res;
-    unsigned int ver_res;
-    unsigned int num_colors;
-    unsigned int important_num_colors;
-} InfoHeader;
-
-typedef struct {
-    unsigned char b,g,r;
-} Color;
-
-typedef struct {
-    BitmapHeader bitmapHeader;
-    InfoHeader infoHeader;
-    Color color_array[];
-} Bitmap;
+#include <string.h>
+#include "bitm.h"
 
 Bitmap * parse_bitmap(FILE *fp) {
     BitmapHeader bitmapHeader;
