@@ -32,6 +32,7 @@ typedef struct Color_t {
 typedef struct Bitmap_t {
     BitmapHeader bitmapHeader;
     InfoHeader infoHeader;
+    unsigned int colorSize;
     Color color_array[];
 } Bitmap;
 

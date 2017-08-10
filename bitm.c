@@ -44,6 +44,7 @@ Bitmap * parse_bitmap(FILE *fp) {
     Bitmap *bitmap = malloc(sizeof(Bitmap) + (sizeof(color_array)/sizeof(unsigned char)));
     bitmap->bitmapHeader = bitmapHeader;
     bitmap->infoHeader = infoHeader;
+    bitmap->colorSize = (sizeof(color_array)/sizeof(unsigned char)) -1;
     memcpy(bitmap->color_array, color_array, (sizeof(color_array)/sizeof(unsigned char)));
     return bitmap;
 }
