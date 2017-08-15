@@ -1,5 +1,3 @@
-//left of finding a solution for storing bytes other than char* so i dont need
-//to assign 2d arrays for byte arrays
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
