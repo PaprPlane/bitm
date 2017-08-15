@@ -8,22 +8,16 @@ Bitmap * parse_bitmap(FILE *fp) {
     BitmapHeader bitmapHeader;
     InfoHeader infoHeader;
 
-    //read header id
     fread(&bitmapHeader.header_id, 2,1,fp);
 
-    //set header size
     fread(&bitmapHeader.file_size, 4,1,fp);
 
-    //set reserved1
     fread(&bitmapHeader.reserved_1, 2, 1, fp);
 
-    //set reserved2
     fread(&bitmapHeader.reserved_2, 2, 1, fp);
 
-    //set pixel offset
     fread(&bitmapHeader.pixel_offset, 4, 1, fp);
 
-    //read the info header into the InfoHeader struct
     fread(&infoHeader, sizeof(InfoHeader), 1, fp);
 
 
