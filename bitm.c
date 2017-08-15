@@ -6,6 +6,7 @@
 #include "bitm.h"
 
 Bitmap * parse_bitmap(FILE *fp) {
+    fseek(fp, 0, SEEK_SET);
     BitmapHeader bitmapHeader;
     InfoHeader infoHeader;
 
